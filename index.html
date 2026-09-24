@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Poeple — de dagelijkse woordladder naar POEP</title>
+  <meta name="description" content="Poeple: verander elke keer één letter en kom zo snel mogelijk bij POEP.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💩</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="icon-btn" id="btn-help" aria-label="Uitleg" title="Uitleg">?</button>
+    <h1>Poeple <span aria-hidden="true">💩</span></h1>
+    <div class="topbar-right">
+      <button class="icon-btn" id="btn-stats" aria-label="Statistieken" title="Statistieken">📊</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="modebar">
+      <button class="mode-btn active" id="mode-daily">Dagelijks <span id="daily-num"></span></button>
+      <button class="mode-btn" id="mode-practice">Oefenen</button>
+    </div>
+
+    <p class="goal">Van <strong id="start-word"></strong> naar <strong>POEP</strong> · par <strong id="par"></strong></p>
+
+    <section id="ladder" class="ladder" aria-live="polite"></section>
+
+    <div id="toast" class="toast" role="status"></div>
+
+    <div class="actions">
+      <button class="action-btn" id="btn-undo">↩ Terug</button>
+      <button class="action-btn" id="btn-hint">💡 Hint</button>
+      <button class="action-btn" id="btn-giveup">🏳 Opgeven</button>
+    </div>
+
+    <section id="keyboard" class="keyboard" aria-label="Toetsenbord"></section>
+  </main>
+
+  <!-- Uitleg -->
+  <dialog id="dlg-help" class="dialog">
+    <button class="close" data-close>✕</button>
+    <h2>Hoe speel je Poeple?</h2>
+    <p>Elke dag krijg je een startwoord van vier letters. Het doel is altijd hetzelfde: <strong>POEP</strong>.</p>
+    <ul>
+      <li>Verander steeds <strong>precies één letter</strong>. Je mag de volgorde van de letters niet veranderen.</li>
+      <li>Elk tussenwoord moet een <strong>bestaand Nederlands woord</strong> zijn.</li>
+      <li>Probeer POEP te halen in zo weinig mogelijk stappen. <em>Par</em> is het kleinst mogelijke aantal.</li>
+    </ul>
+    <div class="example">
+      <div class="mini-row"><span>V</span><span class="hit">O</span><span class="hit">E</span><span>R</span></div>
+      <div class="mini-row"><span>V</span><span class="hit">O</span><span class="hit">E</span><span>T</span></div>
+      <div class="mini-row"><span class="hit">P</span><span class="hit">O</span><span class="hit">E</span><span>T</span></div>
+      <div class="mini-row"><span class="hit">P</span><span class="hit">O</span><span class="hit">E</span><span class="hit">P</span></div>
+    </div>
+    <p><span class="swatch"></span> Bruine letters staan al op de goede plek.</p>
+    <p>Vastgelopen? Met <strong>↩ Terug</strong> haal je je laatste woord weg. Een <strong>💡 Hint</strong> laat zien welke letter je volgende keer het beste kunt veranderen.</p>
+    <p class="small">Elke dag om middernacht een nieuwe Poeple. In de <strong>oefenmodus</strong> kun je onbeperkt spelen.</p>
+  </dialog>
+
+  <!-- Resultaat -->
+  <dialog id="dlg-result" class="dialog">
+    <button class="close" data-close>✕</button>
+    <div class="result-emoji" id="result-emoji">💩</div>
+    <h2 id="result-title"></h2>
+    <p id="result-sub" class="result-sub"></p>
+    <div class="paths">
+      <div>
+        <h3>Jouw route</h3>
+        <ol id="result-yours" class="path"></ol>
+      </div>
+      <div>
+        <h3>Kortste route</h3>
+        <ol id="result-best" class="path"></ol>
+      </div>
+    </div>
+    <div class="result-actions">
+      <button class="primary-btn" id="btn-share">Deel resultaat 📋</button>
+      <button class="secondary-btn" id="btn-new-practice">Nieuwe oefenpuzzel</button>
+    </div>
+    <p class="small" id="next-puzzle"></p>
+  </dialog>
+
+  <!-- Statistieken -->
+  <dialog id="dlg-stats" class="dialog">
+    <button class="close" data-close>✕</button>
+    <h2>Statistieken</h2>
+    <div class="stats-grid">
+      <div><b id="st-played">0</b><span>Gespeeld</span></div>
+      <div><b id="st-win">0</b><span>% Gehaald</span></div>
+      <div><b id="st-streak">0</b><span>Reeks</span></div>
+      <div><b id="st-max">0</b><span>Langste reeks</span></div>
+    </div>
+    <h3>Stappen boven par</h3>
+    <div id="st-dist" class="dist"></div>
+  </dialog>
+
+  <script src="words.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
