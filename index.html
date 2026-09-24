@@ -6,6 +6,8 @@
   <title>Poeple — de dagelijkse woordladder naar POEP</title>
   <meta name="description" content="Poeple: verander elke keer één letter en kom zo snel mogelijk bij POEP.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💩</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -77,6 +79,7 @@
     </div>
     <div class="result-actions">
       <button class="primary-btn" id="btn-share">Deel resultaat 📋</button>
+      <textarea id="share-text" class="share-text" rows="8" readonly hidden></textarea>
       <button class="secondary-btn" id="btn-new-practice">Nieuwe oefenpuzzel</button>
     </div>
     <p class="small" id="next-puzzle"></p>

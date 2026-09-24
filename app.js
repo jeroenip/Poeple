@@ -90,6 +90,7 @@
       game = { mode, start, words: [start], done: false, gaveUp: false, hints: 0 };
     }
     input = '';
+    disarmGiveUp();
     game.par = DIST.get(game.start);
     hintPos = -1;
     render();
@@ -150,9 +151,19 @@
     toast(`Tip: verander letter ${hintPos + 1} ${game.hints > 1 ? '' : '(de gestreepte)'}`.trim());
     renderInput();
   }
+  let giveUpArmed = false, giveUpTimer;
   function giveUp() {
     if (game.done) return;
-    if (!confirm('Weet je zeker dat je wilt opgeven? Dat telt als verloren.')) return;
+    const btn = $('btn-giveup');
+    if (!giveUpArmed) {
+      giveUpArmed = true;
+      btn.textContent = 'Zeker? Klik nog eens';
+      btn.classList.add('armed');
+      clearTimeout(giveUpTimer);
+      giveUpTimer = setTimeout(disarmGiveUp, 3000);
+      return;
+    }
+    disarmGiveUp();
     finish(true);
     persist();
     render();
@@ -176,6 +187,11 @@
       }
     }
     setTimeout(showResult, gaveUp ? 100 : 900);
+  }
+  function disarmGiveUp() {
+    giveUpArmed = false;
+    $('btn-giveup').textContent = '🏳 Opgeven';
+    $('btn-giveup').classList.remove('armed');
   }
   function persist() {
     if (game.mode === 'daily') { store.daily = { [TODAY]: game }; save(); }
@@ -321,6 +337,7 @@
     fill($('result-yours'), game.gaveUp ? [...game.words, '…'] : game.words);
     fill($('result-best'), bestPath(game.start));
     $('btn-new-practice').textContent = game.mode === 'daily' ? 'Oefenen met een nieuwe puzzel' : 'Nieuwe oefenpuzzel';
+    $('share-text').hidden = true;
     updateCountdown();
     $('dlg-result').showModal();
   }
@@ -334,17 +351,20 @@
     return `${head} ${score}${hints}\n${game.start.toUpperCase()} → POEP\n${lines.join('\n')}${game.gaveUp ? '\n🪠' : ''}\n${tail}`;
   }
 
-  async function share() {
+  function share() {
     const text = shareText();
+    const box = $('share-text');
+    const fallback = () => {
+      box.value = text;
+      box.hidden = false;
+      box.focus();
+      box.select();
+      toast('Kopieer de tekst hieronder');
+    };
     try {
-      if (navigator.share && matchMedia('(pointer: coarse)').matches) {
-        await navigator.share({ text });
-        return;
-      }
-      await navigator.clipboard.writeText(text);
-      toast('Gekopieerd naar klembord!');
+      navigator.clipboard.writeText(text).then(() => toast('Gekopieerd naar klembord!'), fallback);
     } catch {
-      prompt('Kopieer je resultaat:', text);
+      fallback();
     }
   }
 
