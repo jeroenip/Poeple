@@ -31,11 +31,57 @@ python3 -m http.server 8000
 - Statistieken en reeksen (opgeslagen in `localStorage`)
 - Fysiek en schermtoetsenbord, dark mode, mobielvriendelijk
 
+## Teller en statistieken
+
+Poeple telt bezoekers en spelgebeurtenissen met [GoatCounter](https://www.goatcounter.com):
+gratis, open source en zonder cookies (dus geen cookiemelding nodig). Er wordt niets persoonlijks
+verstuurd, alleen namen van gebeurtenissen.
+
+**Instellen (eenmalig):**
+1. Maak een gratis account op https://www.goatcounter.com/signup met als code `poeple`
+   (dan wordt je dashboard `https://poeple.goatcounter.com`). Kies je een andere code, pas dan
+   `GOATCOUNTER_CODE` aan in `analytics.js`.
+2. Krijgt Poeple een eigen domein, zet dat dan in `LIVE_HOSTS` in `analytics.js` en in `SITE_URL`
+   in `app.js`.
+
+Lokaal en in previews wordt niets geteld; op `localhost` zie je de gebeurtenissen in de console.
+
+**Wat er geteld wordt:**
+
+| Gebeurtenis | Betekenis |
+|---|---|
+| paginaweergave | Iemand opent de site. Via een gedeeld resultaat staat er `deel` bij de bron. |
+| `speler-dag-0` | Nieuwe speler (eerste bezoek ooit) |
+| `speler-dag-1`, `-2`, `-3`, `-7`, `-14`, `-30` | Speler komt terug 1, 2, 3, 7, 14 of 30 dagen na zijn eerste bezoek |
+| `speler-terugkerend` | Terugkerende speler (1× per dag) |
+| `dag-gestart` | Eerste woord van de dagpuzzel ingevoerd |
+| `dag-opgelost`, `dag-opgelost-op-par`, `dag-opgelost-met-hint` | Dagpuzzel opgelost (en hoe) |
+| `dag-opgegeven` | Dagpuzzel opgegeven |
+| `dag-gedeeld` | Resultaat gedeeld |
+| `dag-hint` | Hint gebruikt (elke keer) |
+| `reeks-3`, `-7`, `-14`, `-30`, `-100` | Speler bereikt een reeks van zoveel dagen |
+| `oefen-gestart`, `oefen-opgelost`, `oefen-opgegeven`, `oefen-gedeeld`, `oefen-hint` | Hetzelfde voor de oefenmodus |
+
+Gebeurtenissen met `dag-` en `speler-` tellen hooguit één keer per speler per dag.
+
+**Belangrijkste cijfers uitrekenen** (in het dashboard, per dag):
+
+| Cijfer | Berekening | Goed teken |
+|---|---|---|
+| Spelers per dag | `dag-gestart` | Groeit week op week |
+| Nieuwe spelers | `speler-dag-0` | |
+| Terugkomers dag 1 | `speler-dag-1` vandaag ÷ `speler-dag-0` gisteren | > 40% |
+| Terugkomers dag 7 | `speler-dag-7` vandaag ÷ `speler-dag-0` 7 dagen geleden | > 20% |
+| Oplospercentage | `dag-opgelost` ÷ `dag-gestart` | 70–90% |
+| Deelpercentage | `dag-gedeeld` ÷ `dag-opgelost` | > 15% |
+| Instroom via delen | bezoeken met bron `deel` | |
+
 ## Bestanden
 
 | Bestand | Inhoud |
 |---|---|
 | `index.html`, `style.css`, `app.js` | Het spel |
+| `analytics.js` | Teller (GoatCounter) en terugkeermeting |
 | `words.js` | Gegenereerde woordenlijst (2789 geldige woorden, 427 startwoorden) |
 | `tools/build_words.py` | Script dat `words.js` opnieuw genereert |
 

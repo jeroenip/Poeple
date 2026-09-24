@@ -7,6 +7,9 @@
   const WORDS = new Set(window.POEPLE_WORDS);
   const STARTS = window.POEPLE_STARTS;
   const STORE_KEY = 'poeple:v1';
+  // Link onder een gedeeld resultaat. Pas aan als Poeple een eigen domein krijgt.
+  const SITE_URL = 'https://jeroenip.github.io/Poeple/';
+  const track = (name, perDag) => window.poepleTrack?.(name, perDag);
 
   // ---------- Graaf & kortste routes ----------
 
@@ -124,6 +127,7 @@
     if (!WORDS.has(input)) return fail(`${input.toUpperCase()} staat niet in de woordenlijst`);
 
     game.words.push(input);
+    if (game.words.length === 2) track(game.mode === 'daily' ? 'dag-gestart' : 'oefen-gestart', game.mode === 'daily');
     input = '';
     hintPos = -1;
     if (game.words[game.words.length - 1] === TARGET) finish(false);
@@ -146,6 +150,7 @@
     const next = bestPath(cur)[1];
     for (let i = 0; i < 4; i++) if (next[i] !== cur[i]) hintPos = i;
     game.hints++;
+    track(game.mode === 'daily' ? 'dag-hint' : 'oefen-hint');
     persist();
     toast(`Tip: verander letter ${hintPos + 1} ${game.hints > 1 ? '' : '(de gestreepte)'}`.trim());
     renderInput();
@@ -181,9 +186,16 @@
         s.lastWon = TODAY;
         const over = Math.min(steps() - game.par, 5);
         s.dist[over] = (s.dist[over] || 0) + 1;
+        track('dag-opgelost', true);
+        if (over <= 0) track('dag-opgelost-op-par', true);
+        if (game.hints) track('dag-opgelost-met-hint', true);
+        if ([3, 7, 14, 30, 100].includes(s.streak)) track('reeks-' + s.streak, true);
       } else {
         s.streak = 0;
+        track('dag-opgegeven', true);
       }
+    } else {
+      track(gaveUp ? 'oefen-opgegeven' : 'oefen-opgelost');
     }
     setTimeout(showResult, gaveUp ? 100 : 900);
   }
@@ -347,11 +359,12 @@
     const score = game.gaveUp ? 'X' : `${steps()}/${game.par}`;
     const hints = game.hints ? ` 💡${game.hints}` : '';
     const tail = game.gaveUp ? '🪠' : (steps() <= game.par ? '💩🏆' : '💩');
-    return `${head} ${score}${hints}\n${game.start.toUpperCase()} → POEP\n${lines.join('\n')}${game.gaveUp ? '\n🪠' : ''}\n${tail}`;
+    return `${head} ${score}${hints}\n${game.start.toUpperCase()} → POEP\n${lines.join('\n')}\n${tail}\n${SITE_URL}?ref=deel`;
   }
 
   function share() {
     const text = shareText();
+    track(game.mode === 'daily' ? 'dag-gedeeld' : 'oefen-gedeeld', game.mode === 'daily');
     const box = $('share-text');
     const fallback = () => {
       box.value = text;
