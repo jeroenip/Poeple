@@ -122,7 +122,6 @@
     if (diff === 0) return fail('Dat is hetzelfde woord');
     if (diff > 1) return fail('Verander precies één letter');
     if (!WORDS.has(input)) return fail(`${input.toUpperCase()} staat niet in de woordenlijst`);
-    if (game.words.includes(input)) return fail('Dat woord heb je al gebruikt');
 
     game.words.push(input);
     input = '';
