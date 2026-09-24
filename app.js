@@ -445,6 +445,7 @@
   $('btn-hint').onclick = hint;
   $('btn-giveup').onclick = giveUp;
   $('btn-share').onclick = share;
+  $('health-tip').onclick = () => track('mdl-poeptest-klik');
   $('btn-new-practice').onclick = () => { $('dlg-result').close(); newGame('practice'); };
   $('mode-daily').onclick = () => newGame('daily');
   $('mode-practice').onclick = () => newGame('practice');

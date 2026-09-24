@@ -60,6 +60,7 @@ Lokaal en in previews wordt niets geteld; op `localhost` zie je de gebeurtenisse
 | `dag-gedeeld` | Resultaat gedeeld |
 | `dag-hint` | Hint gebruikt (elke keer) |
 | `reeks-3`, `-7`, `-14`, `-30`, `-100` | Speler bereikt een reeks van zoveel dagen |
+| `mdl-poeptest-klik` | Klik op de checkjepoep-test van MDL Fonds na het oplossen. MDL Fonds ziet deze bezoekers zelf ook binnenkomen met `utm_source=poeple`. |
 | `oefen-gestart`, `oefen-opgelost`, `oefen-opgegeven`, `oefen-gedeeld`, `oefen-hint` | Hetzelfde voor de oefenmodus |
 
 Gebeurtenissen met `dag-` en `speler-` tellen hooguit één keer per speler per dag.
