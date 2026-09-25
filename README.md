@@ -2,6 +2,8 @@
 
 De Nederlandse versie van [Poople](https://poople.io/): een dagelijkse **woordladder** naar **POEP**.
 
+**Speel op https://poeple.nl**
+
 Je krijgt een startwoord van vier letters. Verander steeds precies één letter, elk tussenwoord
 moet een bestaand Nederlands woord zijn, en probeer zo snel mogelijk bij POEP uit te komen.
 *Par* is het kleinst mogelijke aantal stappen.
@@ -77,12 +79,20 @@ Gebeurtenissen met `dag-` en `speler-` tellen hooguit één keer per speler per 
 | Deelpercentage | `dag-gedeeld` ÷ `dag-opgelost` | > 15% |
 | Instroom via delen | bezoeken met bron `deel` | |
 
+## Online zetten
+
+De site draait op GitHub Pages (branch `main`, map `/`) met eigen domein `poeple.nl` (bestand `CNAME`).
+DNS bij TransIP: `@` → A-records `185.199.108.153` t/m `185.199.111.153` en AAAA-records
+`2606:50c0:8000::153` t/m `2606:50c0:8003::153`; `www` → CNAME `jeroenip.github.io.`
+
 ## Bestanden
 
 | Bestand | Inhoud |
 |---|---|
 | `index.html`, `style.css`, `app.js` | Het spel |
 | `analytics.js` | Teller (GoatCounter) en terugkeermeting |
+| `CNAME` | Eigen domein voor GitHub Pages |
+| `fonts/` | Lettertype Fredoka (SIL Open Font License) |
 | `words.js` | Gegenereerde woordenlijst (2789 geldige woorden, 427 startwoorden) |
 | `tools/build_words.py` | Script dat `words.js` opnieuw genereert |
 

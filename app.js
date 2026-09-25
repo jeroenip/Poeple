@@ -8,7 +8,7 @@
   const STARTS = window.POEPLE_STARTS;
   const STORE_KEY = 'poeple:v1';
   // Link onder een gedeeld resultaat. Pas aan als Poeple een eigen domein krijgt.
-  const SITE_URL = 'https://jeroenip.github.io/Poeple/';
+  const SITE_URL = 'https://poeple.nl/';
   const track = (name, perDag) => window.poepleTrack?.(name, perDag);
 
   // ---------- Graaf & kortste routes ----------
